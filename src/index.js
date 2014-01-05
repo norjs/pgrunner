@@ -54,11 +54,6 @@ module.exports = function PG(opts) {
 		return spawnProcess("pg_ctl", ["stop", "-w", "-m", "fast"], {"env": instance.env});
 	};
 
-	instance.config = function config() {
-		var env = instance.env;
-		return "pg://" + env.PGUSER + "@" + env.PGHOST + ":" + env.PGPORT + "/" + env.PGDATABASE;
-	}
-
 	// Startup promise
 	return mktempdir('nor-pgrunner-data-').then(function(tmpdir) {
 		// Set PGDATA to environment
@@ -70,6 +65,7 @@ module.exports = function PG(opts) {
 			"PGUSER": pguser,
 			"PGDATABASE": pgdatabase
 		};
+		instance.pgconfig = "pg://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
 	}).then(function initdb(){
 		// Spawn postgresql initdb
 		debug.log("Spawning pg_ctl init");

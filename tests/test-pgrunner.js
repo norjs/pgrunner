@@ -26,7 +26,7 @@ describe('nor-pgrunner', function() {
 		}
 
 		pg(opts).then(function(db){
-			assert.equal("pg://dummyuser@127.0.0.1:54323/dummydb", db.config(), "Should generate proper config string!");
+			assert.equal("pg://dummyuser@127.0.0.1:54323/dummydb", db.pgconfig, "Should generate proper config string!");
 			return db.stop();
 		}).then(function(){
 			done();
