@@ -11,7 +11,7 @@ temp.track();
  * Return promise of a spawned command
  */
 function spawnProcess(command, args, options) {
-	var options = options || {};
+	options = options || {};
 	var defer = Q.defer();
 
 	options.env = merge(process.env, options.env || {});
@@ -36,7 +36,7 @@ function spawnProcess(command, args, options) {
 	});
 
 	return defer.promise;
-};
+}
 
 var mktempdir = Q.denodeify(temp.mkdir);
 
