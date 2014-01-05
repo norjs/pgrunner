@@ -3,7 +3,6 @@
 var assert = require('assert');
 var pg = require('../src');
 
-
 describe('nor-pgrunner', function() {
 	it('Initialize, start and stop', function(done) {
 		pg().then(function(db){
@@ -23,7 +22,7 @@ describe('nor-pgrunner', function() {
 			port: "54323",
 			user: "dummyuser",
 			database: "dummydb"
-		}
+		};
 
 		pg(opts).then(function(db){
 			assert.equal("pg://dummyuser@127.0.0.1:54323/dummydb", db.pgconfig, "Should generate proper config string!");
