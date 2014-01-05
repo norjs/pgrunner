@@ -4,16 +4,33 @@
   "description": "PostgreSQL Database Server Runner Module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test-spec",
+    "test-dot": "mocha -t 30000 -u bdd -c -R dot tests/test-*.js",
+    "test-list": "mocha -t 30000 -u bdd -c -R list tests/test-*.js",
+    "test-spec": "mocha -t 30000 -u bdd -c -R spec tests/test-*.js",
+    "test-progress": "mocha -t 30000 -u bdd -c -R progress tests/test-*.js",
+    "test-min": "mocha -t 30000 -u bdd -c -R min tests/test-*.js",
+    "test-markdown": "mocha -t 30000 -u bdd -c -R markdown tests/test-*.js",
+    "build-tests.md": "npm run test-markdown > tests.md"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/Sendanor/nor-pgrunner.git"
   },
-  "author": "",
+  "author": "Juho Juopperi",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Sendanor/nor-pgrunner/issues"
   },
-  "homepage": "https://github.com/Sendanor/nor-pgrunner"
+  "homepage": "https://github.com/Sendanor/nor-pgrunner",
+  "dependencies": {
+    "q": "1.0.0",
+    "merge": "1.1.2",
+    "temp": "0.6.0",
+    "nor-debug": "*"
+  },
+  "devDependencies": {
+    "lint": "1.1.2",
+    "mocha": "1.16.2"
+  }
 }
