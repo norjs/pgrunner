@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Sendanor/nor-pgrunner.git"
+    "url": "git://github.com/sendanor/nor-pgrunner.git"
   },
   "author": "Juho Juopperi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Sendanor/nor-pgrunner/issues"
+    "url": "https://github.com/sendanor/nor-pgrunner/issues"
   },
-  "homepage": "https://github.com/Sendanor/nor-pgrunner",
+  "homepage": "https://github.com/sendanor/nor-pgrunner",
   "dependencies": {
     "q": "1.0.0",
     "merge": "1.1.2",
