@@ -8,6 +8,11 @@ var temp = require('temp');
 temp.track();
 
 /**
+ * Function that returns promise of a temporary directory
+ */
+var mktempdir = Q.denodeify(temp.mkdir);
+
+/**
  * Return promise of a spawned command
  */
 function spawnProcess(command, args, options) {
@@ -38,26 +43,22 @@ function spawnProcess(command, args, options) {
 	return defer.promise;
 }
 
-var mktempdir = Q.denodeify(temp.mkdir);
-
 module.exports = function PG(opts) {
-	opts = opts || {};
 
+	opts = opts || {};
 	var pghost = opts.host || '127.0.0.1';
 	var pgport = opts.port || 55432;
 	var pguser = opts.user || process.env.USER;
 	var pgdatabase = opts.database || pguser;
-	var instance = {};
 
+	var instance = {};
 	instance.stop = function stop() {
-		debug.log("Spawning pg_ctl stop");
+		debug.log("Stopping PostgreSQL");
 		return spawnProcess("pg_ctl", ["stop", "-w", "-m", "fast"], {"env": instance.env});
 	};
 
-	// Startup promise
+	// Create and start the database
 	return mktempdir('nor-pgrunner-data-').then(function(tmpdir) {
-		// Set PGDATA to environment
-		debug.log("PGDATA ", tmpdir);
 		instance.env = {
 			"PGDATA": tmpdir,
 			"PGHOST": pghost,
@@ -67,18 +68,12 @@ module.exports = function PG(opts) {
 		};
 		instance.pgconfig = "pg://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
 	}).then(function initdb(){
-		// Spawn postgresql initdb
-		debug.log("Spawning pg_ctl init");
-		return spawnProcess("pg_ctl", ["init", "-w"], {"env": instance.env});
+		debug.log("Initializing PostgreSQL database");
+		return spawnProcess("pg_ctl", ["init", "-w", "-o", "-N --locale=C -U " + pguser], {"env": instance.env});
 	}).then(function start(){
-		// Spawn postgresql startup
-		debug.log("Spawning pg_ctl start");
+		debug.log("Starting PostgreSQL");
 		return spawnProcess("pg_ctl", ["start", "-w", "-o", "-F"], {"env": instance.env});
-	}).then(function status(){
-		debug.log("Spawning pg_ctl status");
-		return spawnProcess("pg_ctl", ["status"], {"env": instance.env});
 	}).then(function(){
-		debug.log("Returning instance");
 		return instance;
 	});
 };
