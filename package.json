@@ -28,7 +28,7 @@
     "q": "1.0.0",
     "merge": "1.1.2",
     "temp": "0.6.0",
-    "nor-debug": "*"
+    "nor-debug": "0.1.20"
   },
   "devDependencies": {
     "lint": "1.1.2",

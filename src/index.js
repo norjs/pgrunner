@@ -1,6 +1,6 @@
 "use strict";
 
-var Q = require('Q');
+var Q = require('q');
 var merge = require('merge');
 var debug = require('nor-debug');
 
@@ -64,15 +64,17 @@ module.exports = function PG(opts) {
 			"PGHOST": pghost,
 			"PGPORT": pgport,
 			"PGUSER": pguser,
-			"PGDATABASE": pgdatabase
+			"PGDATABASE": pgdatabase,
+			"PGCLIENTENCODING": "UTF-8",
+			"TZ": "UTC"
 		};
 		instance.pgconfig = "pg://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
 	}).then(function initdb(){
 		debug.log("Initializing PostgreSQL database");
-		return spawnProcess("pg_ctl", ["init", "-w", "-o", "-N --locale=C -U " + pguser], {"env": instance.env});
+		return spawnProcess("pg_ctl", ["init", "-w", "-o", "-N -U " + pguser], {"env": instance.env});
 	}).then(function start(){
 		debug.log("Starting PostgreSQL");
-		return spawnProcess("pg_ctl", ["start", "-w", "-o", "-F"], {"env": instance.env});
+		return spawnProcess("pg_ctl", ["start", "-w", "-o", "-F --unix-socket-directories=/tmp"], {"env": instance.env});
 	}).then(function(){
 		return instance;
 	});
