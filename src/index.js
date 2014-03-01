@@ -1,3 +1,5 @@
+/* pgrunner library */
+
 "use strict";
 
 var Q = require('q');
@@ -18,6 +20,10 @@ var mktempdir = Q.denodeify(temp.mkdir);
 function spawnProcess(command, args, options) {
 	options = options || {};
 	var defer = Q.defer();
+
+	debug.log('command = ', command);
+	debug.log('args = ', args);
+	debug.log('options = ', options);
 
 	options.env = merge(process.env, options.env || {});
 	options.detached = true;
@@ -43,19 +49,30 @@ function spawnProcess(command, args, options) {
 	return defer.promise;
 }
 
-module.exports = function PG(opts) {
+/** Constructor */
+function PGRunnerInstance(opts) {
+	opts = opts || {};
+	this.env = opts.env || undefined;
+	this.pgconfig = opts.pgconfig || undefined;
+}
+
+/** Stop the instance */
+PGRunnerInstance.prototype.stop = function pgrunner_stop() {
+	var self = this;
+	debug.log("Stopping PostgreSQL");
+	return spawnProcess("pg_ctl", ["stop", "-w", "-m", "fast"], {"env": self.env});
+};
+
+/* The Module */
+var pgrunner = module.exports = function pgrunner_create(opts) {
 
 	opts = opts || {};
-	var pghost = opts.host || '127.0.0.1';
+	var pghost = opts.host || '127.0.0.1';
 	var pgport = opts.port || 55432;
 	var pguser = opts.user || process.env.USER;
 	var pgdatabase = opts.database || pguser;
 
-	var instance = {};
-	instance.stop = function stop() {
-		debug.log("Stopping PostgreSQL");
-		return spawnProcess("pg_ctl", ["stop", "-w", "-m", "fast"], {"env": instance.env});
-	};
+	var instance = new PGRunnerInstance();
 
 	// Create and start the database
 	return mktempdir('nor-pgrunner-data-').then(function(tmpdir) {
@@ -79,3 +96,7 @@ module.exports = function PG(opts) {
 		return instance;
 	});
 };
+
+pgrunner.Instance = PGRunnerInstance;
+
+/* EOF */
