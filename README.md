@@ -3,6 +3,10 @@ nor-pgrunner
 
 Utility which can be used to start PostgreSQL server instances temporarely. Good for testing.
 
+### TODO
+
+We use [Trello board](//trello.com/b/aq9cAAiG/nor-pgrunner) to organize development and keep track on things to do.
+
 ### Installation
 
 Install from NPM: `npm install -g pgrunner`
