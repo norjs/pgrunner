@@ -22,7 +22,7 @@ Q.longStackSupport = true;
 var RIMRAF = require('rimraf');
 var rimraf = Q.denodeify(RIMRAF);
 
-var pgrunner_config_file = require('path').resolve(process.env.HOME, '.pgrunner.json');
+var pgrunner_config_file = require('path').resolve(process.env.HOME, '.nor-pgrunner.json');
 
 /** Returns current config */
 function load_config() {
