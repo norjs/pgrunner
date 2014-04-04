@@ -7,12 +7,43 @@ var merge = require('merge');
 var debug = require('nor-debug');
 
 var temp = require('temp');
-temp.track();
+
+var is = require('nor-is');
+var PATH = require('path');
+var fs = require('nor-fs');
 
 /**
  * Function that returns promise of a temporary directory
  */
 var mktempdir = Q.denodeify(temp.mkdir);
+
+/** Search command from PATH 
+ */
+function command_exists(paths, name) {
+	if(is.string(paths)) {
+		paths = paths.split(':');
+	}
+	
+	debug.assert(paths).is('array');
+	
+	return paths.some(function(dir) {
+		return fs.sync.exists(PATH.join(dir, name));
+	});
+}
+
+/* */
+var PG_CTL = 'pg_ctl';
+
+if(!command_exists(process.env.PATH, 'pg_ctl')) {
+	['/usr/lib/postgresql/9.3/bin', '/usr/lib/postgresql/9.4/bin'].forEach(function(bin_dir) {
+		if(fs.sync.exists(PATH.join(bin_dir, 'pg_ctl'))) {
+			process.env.PATH = bin_dir + ':' + process.env.PATH;
+			PG_CTL = PATH.join(bin_dir, 'pg_ctl');
+		}
+	});
+}
+
+debug.log('pg_ctl detected as ', PG_CTL);
 
 /**
  * Return promise of a spawned command
@@ -27,17 +58,23 @@ function spawnProcess(command, args, options) {
 
 	options.env = merge(process.env, options.env || {});
 	options.detached = true;
-	options.stdio = "ignore";
+	options.stdio = ["ignore", "ignore", "pipe"];
+
+	var stderr = '';
 
 	// Run the process
 	var proc = require('child_process').spawn(command, args, options);
+	proc.stderr.setEncoding('utf8');
+	proc.stderr.on('data', function(data) {
+		stderr += data;
+	});
 
 	// Handle exit
 	proc.on('close', function(retval) {
 		if (retval === 0) {
 			defer.resolve(retval);
 		} else {
-			defer.reject({"retval": retval});
+			defer.reject({"retval": retval, "stderr": stderr});
 		}
 	});
 
@@ -52,7 +89,8 @@ function spawnProcess(command, args, options) {
 /** Constructor */
 function PGRunnerInstance(opts) {
 	opts = opts || {};
-	this.env = opts.env || undefined;
+	this.settings = opts.settings || {};
+	this.env = opts.env || {};
 	this.pgconfig = opts.pgconfig || undefined;
 }
 
@@ -60,7 +98,10 @@ function PGRunnerInstance(opts) {
 PGRunnerInstance.prototype.stop = function pgrunner_stop() {
 	var self = this;
 	debug.log("Stopping PostgreSQL");
-	return spawnProcess("pg_ctl", ["stop", "-w", "-m", "fast"], {"env": self.env});
+	debug.log("env = ", self.env);
+	return spawnProcess(PG_CTL, ["stop", "-w", "-m", "fast"], {"env": self.env}).then(function() {
+		
+	});
 };
 
 /* The Module */
@@ -76,6 +117,12 @@ var pgrunner = module.exports = function pgrunner_create(opts) {
 
 	// Create and start the database
 	return mktempdir('nor-pgrunner-data-').then(function(tmpdir) {
+		instance.settings = {
+			'host': pghost,
+			'port': pgport,
+			'user': pguser,
+			'database': pgdatabase
+		};
 		instance.env = {
 			"PGDATA": tmpdir,
 			"PGHOST": pghost,
@@ -88,15 +135,21 @@ var pgrunner = module.exports = function pgrunner_create(opts) {
 		instance.pgconfig = "pg://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
 	}).then(function initdb(){
 		debug.log("Initializing PostgreSQL database");
-		return spawnProcess("pg_ctl", ["init", "-w", "-o", "-N -U " + pguser], {"env": instance.env});
+		return spawnProcess(PG_CTL, ["init", "-w", "-o", "-N -U " + pguser], {"env": instance.env});
 	}).then(function start(){
 		debug.log("Starting PostgreSQL");
-		return spawnProcess("pg_ctl", ["start", "-w", "-o", "-F --unix-socket-directories=/tmp"], {"env": instance.env});
+		return spawnProcess(PG_CTL, ["start", "-w", "-o", "-F --unix-socket-directories=/tmp"], {"env": instance.env});
 	}).then(function(){
 		return instance;
 	});
 };
 
 pgrunner.Instance = PGRunnerInstance;
+
+/** Automatically track and cleanup files at exit */
+pgrunner.enableAutoClean = function() {
+	temp.track();
+	// FIXME: Does not shutdown servers when cleaning up files.
+};
 
 /* EOF */
