@@ -5,14 +5,15 @@ Utility which can be used to start PostgreSQL server instances temporarely. Good
 
 ### Installation
 
-Install from NPM: `npm install -g nor-pgrunner`
+Install from NPM: `npm install -g pgrunner`
 
 ### Usage over CLI
 
 Use with CLI:
 
 ```
-nor-pgrunner start
+pgrunner create
+pgrunner destroy
 ```
 
 ### Usage over Node.js
