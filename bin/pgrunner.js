@@ -113,7 +113,7 @@ var _commands = {
 			save_config(config);
 			
 			// Print to screen
-			console.log('Created: ' + instance.pgconfig);
+			console.log(instance.pgconfig);
 		});
 	},
 	'list': function(opts) {
