@@ -4,7 +4,7 @@
   "description": "PostgreSQL Database Server Runner",
   "main": "index.js",
   "bin": {
-    "pgrunner": "./bin/pgrunner.js"
+    "nor-pgrunner": "./bin/pgrunner.js"
   },
   "scripts": {
     "test": "npm run test-spec",
