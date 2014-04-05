@@ -140,6 +140,8 @@ var pgrunner = module.exports = function pgrunner_create(opts) {
 		debug.log("Starting PostgreSQL");
 		return spawnProcess(PG_CTL, ["start", "-w", "-o", "-F --unix-socket-directories=/tmp"], {"env": instance.env});
 	}).then(function(){
+		return spawnProcess('createdb', ["-w", "-h", pghost, "-p", pgport, "-U", pguser, "-O", pguser, pgdatabase], {"env": instance.env});
+	}).then(function(){
 		return instance;
 	});
 };
