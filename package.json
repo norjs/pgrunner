@@ -1,6 +1,6 @@
 {
   "name": "nor-pgrunner",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "PostgreSQL Database Server Runner",
   "main": "src/index.js",
   "bin": {
@@ -31,9 +31,9 @@
     "q"         : ">= 1.0.1  < 1.1.0",
     "merge"     : ">= 1.1.2  < 1.2.0",
     "temp"      : ">= 0.6.0  < 0.7.0",
-    "nor-fs"    : ">= 0.1.9  < 0.2.0",
-    "nor-is"    : ">= 0.1.13 < 0.2.0",
-    "nor-debug" : ">= 0.1.41 < 0.2.0",
+    "nor-fs"    : ">= 0.1.10  < 0.2.0",
+    "nor-is"    : ">= 0.1.14 < 0.2.0",
+    "nor-debug" : ">= 0.1.42 < 0.2.0",
     "optimist"  : ">= 0.6.1  < 0.7.0",
     "rimraf"    : ">= 2.2.6  < 2.3.0"
   },
