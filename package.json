@@ -1,6 +1,6 @@
 {
   "name": "nor-pgrunner",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "PostgreSQL Database Server Runner",
   "main": "src/index.js",
   "bin": {
@@ -29,13 +29,13 @@
   "homepage": "https://github.com/sendanor/nor-pgrunner",
   "dependencies": {
     "q"         : ">= 1.0.1  < 1.1.0",
-    "merge"     : ">= 1.1.2  < 1.2.0",
+    "merge"     : ">= 1.1.3  < 1.2.0",
     "temp"      : ">= 0.6.0  < 0.7.0",
     "nor-fs"    : ">= 0.1.10  < 0.2.0",
     "nor-is"    : ">= 0.1.14 < 0.2.0",
     "nor-debug" : ">= 0.1.42 < 0.2.0",
     "optimist"  : ">= 0.6.1  < 0.7.0",
-    "rimraf"    : ">= 2.2.6  < 2.3.0"
+    "rimraf"    : ">= 2.2.8  < 2.3.0"
   },
   "devDependencies": {
     "lint": ">= 1.1.2 <1.2.0",
