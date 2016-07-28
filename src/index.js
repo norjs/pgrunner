@@ -132,7 +132,7 @@ var pgrunner = module.exports = function pgrunner_create(opts) {
 			"PGCLIENTENCODING": "UTF-8",
 			"TZ": "UTC"
 		};
-		instance.pgconfig = "pg://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
+		instance.pgconfig = "postgresql://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
 	}).then(function initdb(){
 		debug.log("Initializing PostgreSQL database");
 		return spawnProcess(PG_CTL, ["init", "-w", "-o", "-N -U " + pguser], {"env": instance.env});
