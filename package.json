@@ -4,7 +4,7 @@
   "description": "PostgreSQL Database Server Runner",
   "main": "src/index.js",
   "bin": {
-    "nor-pgrunner": "./bin/pgrunner.js"
+    "nor-pgrunner": "./src/bin/pgrunner.js"
   },
   "scripts": {
     "test": "npm run test-spec",
@@ -15,7 +15,8 @@
     "test-min": "mocha -t 30000 -u bdd -c -R min tests/test-*.js",
     "test-markdown": "mocha -t 30000 -u bdd -c -R markdown tests/test-*.js",
     "build-tests.md": "npm run test-markdown > tests.md",
-    "lint": "node-lint src/ --config=lint.json"
+    "lint": "node-lint src/ --config=lint.json",
+    "jshint": "jshint src/"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,7 @@
   "dependencies": {
     "q"         : "^1.0.1",
     "merge"     : "^1.1.3",
-    "temp"      : "^0.6.0",
+    "temp"      : "^0.8.3",
     "nor-fs"    : "^1.0.0",
     "nor-is"    : "^1.0.0",
     "nor-debug" : "^1.0.0",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "lint": "^1.1.2",
+    "jshint": "^2.9.2",
     "mocha": "^1.16.2"
   }
 }

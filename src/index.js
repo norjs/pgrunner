@@ -23,9 +23,9 @@ function command_exists(paths, name) {
 	if(is.string(paths)) {
 		paths = paths.split(':');
 	}
-	
+
 	debug.assert(paths).is('array');
-	
+
 	return paths.some(function(dir) {
 		return fs.sync.exists(PATH.join(dir, name));
 	});
@@ -100,7 +100,6 @@ PGRunnerInstance.prototype.stop = function pgrunner_stop() {
 	debug.log("Stopping PostgreSQL");
 	debug.log("env = ", self.env);
 	return spawnProcess(PG_CTL, ["stop", "-w", "-m", "fast"], {"env": self.env}).then(function() {
-		
 	});
 };
 

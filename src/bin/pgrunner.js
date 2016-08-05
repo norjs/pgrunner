@@ -2,8 +2,8 @@
 /* $filename: $ */
 "use strict";
 
+var pgrunner = require('../index.js');
 var argv = require('optimist').boolean('v').argv;
-var util = require('util');
 var debug = require('nor-debug');
 
 if(argv.v) {
@@ -16,11 +16,11 @@ debug.setProjectRoot(require('path').dirname(__dirname));
 
 var is = require('nor-is');
 var fs = require('nor-fs');
-var Q = require('q');
-Q.longStackSupport = true;
+var _Q = require('q');
+_Q.longStackSupport = true;
 
 var RIMRAF = require('rimraf');
-var rimraf = Q.denodeify(RIMRAF);
+var rimraf = _Q.denodeify(RIMRAF);
 
 var pgrunner_config_file = require('path').resolve(process.env.HOME, '.nor-pgrunner.json');
 
@@ -43,8 +43,6 @@ function save_config(config) {
 	debug.log('Saved to ', pgrunner_config_file);
 }
 
-var pgrunner = require('../src/index.js');
-
 /** Strip argv */
 function strip_argv(a) {
 	var o = {};
@@ -53,8 +51,8 @@ function strip_argv(a) {
 	}).map(function(k) {
 		o[k] = a[k];
 	});
-	debug.log('o = ', o);
-	return o;
+	//debug.log('o = ', o);
+	//return o;
 }
 
 /* Strip keys */
@@ -99,24 +97,24 @@ function search_server(servers, opts) {
 	if(!instance_opts) {
 		throw new Error('Could not find server!');
 	}
-	
+
 	return instance_opts;
 }
 
 var _commands = {
 	'create': function(opts) {
 		return pgrunner(opts).then(function(instance) {
-			
+
 			// Save config
 			var config = load_config();
 			config.servers.push(instance);
 			save_config(config);
-			
+
 			// Print to screen
 			console.log(instance.pgconfig);
 		});
 	},
-	'list': function(opts) {
+	'list': function(/*opts*/) {
 		var config = load_config();
 		debug.log('config = ', config);
 		console.log( "pgconfig\n--------\n" + config.servers.map(function(server) {
@@ -156,13 +154,13 @@ var _commands = {
 				return s.MARKED_FOR_DELETE === undefined;
 			});
 			save_config(config);
-			
+
 			console.log('Destroyed successfully');
 		});
 	}
 };
 
-Q.fcall(function() {
+_Q.fcall(function() {
 
 	var steps = argv._.map(function(cmd) {
 		if(is.func(_commands[cmd])) {
@@ -192,14 +190,14 @@ Q.fcall(function() {
 		console.log('');
 	}
 
-	return steps.reduce(Q.when, Q());
+	return steps.reduce(_Q.when, _Q());
 
 }).fail(function(err) {
 	if(err.retval && err.stderr) {
-		util.error(err.stderr);
+		process.stderr.write(err.stderr + '\n');
 		return;
 	}
-	util.error('Error: ', err);
+	process.stderr.write('Error: ' + err + '\n');
 	if(err.stack) {
 		debug.log(err.stack);
 	}
