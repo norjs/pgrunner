@@ -29,7 +29,9 @@ function load_config() {
 	var config = {};
 	if(fs.sync.exists(pgrunner_config_file)) {
 		config = JSON.parse(fs.sync.readFile(pgrunner_config_file, {'encoding':'utf8'}));
-		debug.log('Loaded from ', pgrunner_config_file);
+		if(argv.v) {
+			debug.log('Loaded from ', pgrunner_config_file);
+		}
 	}
 	if(!is.array(config.servers)) {
 		config.servers = [];
@@ -40,7 +42,9 @@ function load_config() {
 /** Save current config */
 function save_config(config) {
 	fs.sync.writeFile(pgrunner_config_file, JSON.stringify(config, null, 2), {'encoding':'utf8'});
-	debug.log('Saved to ', pgrunner_config_file);
+	if(argv.v) {
+		debug.log('Saved to ', pgrunner_config_file);
+	}
 }
 
 /** Strip argv */
@@ -116,7 +120,9 @@ var _commands = {
 	},
 	'list': function(/*opts*/) {
 		var config = load_config();
-		debug.log('config = ', config);
+		if(argv.v) {
+			debug.log('config = ', config);
+		}
 		console.log( "pgconfig\n--------\n" + config.servers.map(function(server) {
 			return [server.pgconfig].join(' | ');
 		}).join('\n') );
@@ -125,12 +131,16 @@ var _commands = {
 
 		// Load config
 		var config = load_config();
-		debug.log('config = ', config);
+		if(argv.v) {
+			debug.log('config = ', config);
+		}
 
 		opts = strip_server_opts(opts);
 
 		var instance_opts = search_server(config.servers, opts);
-		debug.log('instance_opts = ', instance_opts);
+		if(argv.v) {
+			debug.log('instance_opts = ', instance_opts);
+		}
 
 		debug.assert(instance_opts).is('object');
 
@@ -139,7 +149,9 @@ var _commands = {
 		var instance = new pgrunner.Instance( instance_opts );
 		debug.assert(instance).is('object');
 
-		debug.log('Stopping...');
+		if(argv.v) {
+			debug.log('Stopping...');
+		}
 
 		return instance.stop().then(function() {
 			// Remove the temp directory
@@ -199,7 +211,7 @@ _Q.fcall(function() {
 	}
 	process.stderr.write('Error: ' + err + '\n');
 	if(err.stack) {
-		debug.log(err.stack);
+		debug.error(err.stack);
 	}
 }).done();
 
