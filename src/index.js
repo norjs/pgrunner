@@ -43,7 +43,7 @@ if(!command_exists(process.env.PATH, 'pg_ctl')) {
 	});
 }
 
-debug.log('pg_ctl detected as ', PG_CTL);
+//debug.log('pg_ctl detected as ', PG_CTL);
 
 /**
  * Return promise of a spawned command
@@ -52,9 +52,9 @@ function spawnProcess(command, args, options) {
 	options = options || {};
 	var defer = Q.defer();
 
-	debug.log('command = ', command);
-	debug.log('args = ', args);
-	debug.log('options = ', options);
+	//debug.log('command = ', command);
+	//debug.log('args = ', args);
+	//debug.log('options = ', options);
 
 	options.env = merge(process.env, options.env || {});
 	options.detached = true;
@@ -97,8 +97,8 @@ function PGRunnerInstance(opts) {
 /** Stop the instance */
 PGRunnerInstance.prototype.stop = function pgrunner_stop() {
 	var self = this;
-	debug.log("Stopping PostgreSQL");
-	debug.log("env = ", self.env);
+	//debug.log("Stopping PostgreSQL");
+	//debug.log("env = ", self.env);
 	return spawnProcess(PG_CTL, ["stop", "-w", "-m", "fast"], {"env": self.env}).then(function() {
 	});
 };
@@ -133,10 +133,10 @@ var pgrunner = module.exports = function pgrunner_create(opts) {
 		};
 		instance.pgconfig = "postgresql://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
 	}).then(function initdb(){
-		debug.log("Initializing PostgreSQL database");
+		//debug.log("Initializing PostgreSQL database");
 		return spawnProcess(PG_CTL, ["init", "-w", "-o", "-N -U " + pguser], {"env": instance.env});
 	}).then(function start(){
-		debug.log("Starting PostgreSQL");
+		//debug.log("Starting PostgreSQL");
 		return spawnProcess(PG_CTL, ["start", "-w", "-o", "-F --unix-socket-directories=/tmp"], {"env": instance.env});
 	}).then(function(){
 		return spawnProcess('createdb', ["-w", "-h", pghost, "-p", pgport, "-U", pguser, "-O", pguser, pgdatabase], {"env": instance.env});
