@@ -1,5 +1,5 @@
 {
-  "name": "nor-pgrunner",
+  "name": "@norjs/pgrunner",
   "version": "1.3.1",
   "description": "PostgreSQL Database Server Runner for Node.js",
   "main": "./dist/index.js",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sendanor/nor-pgrunner.git"
+    "url": "git://github.com/norjs/pgrunner.git"
   },
   "author": "Juho Juopperi",
   "contributors": [
@@ -35,9 +35,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sendanor/nor-pgrunner/issues"
+    "url": "https://github.com/norjs/pgrunner/issues"
   },
-  "homepage": "https://github.com/sendanor/nor-pgrunner",
+  "homepage": "https://github.com/norjs/pgrunner",
   "dependencies": {
     "@norjs/debug": "^1.3.0",
     "@norjs/is": "^1.3.0",

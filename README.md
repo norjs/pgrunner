@@ -1,11 +1,7 @@
-nor-pgrunner
-============
+@norjs/pgrunner (Originally [sendanor/nor-pgrunner](https://github.com/sendanor/nor-pgrunner))
+=========================================
 
 Utility which can be used to start PostgreSQL server instances temporarely. Good for testing.
-
-### TODO
-
-We use [Trello board](//trello.com/b/aq9cAAiG/nor-pgrunner) to organize development and keep track on things to do.
 
 ### Installation
 
@@ -55,4 +51,4 @@ pgrunner({
 Commercial Support
 ------------------
 
-You can buy commercial support from [Sendanor](http://sendanor.com/software).
+You can buy commercial support from [Sendanor](http://sendanor.com/).
