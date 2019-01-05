@@ -73,7 +73,7 @@ if (!command_exists(process.env.PATH, 'pg_ctl')) {
 	});
 }
 
-debug.log('pg_ctl detected as ', PG_CTL);
+//debug.log('pg_ctl detected as ', PG_CTL);
 
 /** Return promise of a spawned command
  *
@@ -102,13 +102,13 @@ function spawnProcess (command, args, {env = {}} = {}) {
 
 		// Run the process
 
-		debug.log('Executing command ', command, args);
+		//debug.log('Executing command ', command, args);
 
 		let proc = child_process.spawn(command, args, options);
 
 		// Handle exit
 		proc.on('close', retval => {
-			debug.log('Command ', command, args, ' closed with ', retval);
+			//debug.log('Command ', command, args, ' closed with ', retval);
 			if (retval === 0) {
 				resolve(retval);
 			} else {
@@ -157,8 +157,8 @@ export class PGRunnerInstance {
 
 	/** Stop the instance */
 	stop () {
-		debug.log("Stopping PostgreSQL");
-		debug.log("env = ", this.env);
+		//debug.log("Stopping PostgreSQL");
+		//debug.log("env = ", this.env);
 		return spawnProcess(PG_CTL, PG_CTL_STOP_OPTS, {"env": this.env}).then(() => {});
 	}
 
@@ -181,7 +181,7 @@ export function pgrunner (opts = {}) {
 	// Create and start the database
 	return mktempdir('nor-pgrunner-data-').then(tmpdir => {
 
-		debug.log('Created temp directory: ', tmpdir);
+		//debug.log('Created temp directory: ', tmpdir);
 
 		instance.settings = {
 			'host': pghost,
@@ -202,17 +202,17 @@ export function pgrunner (opts = {}) {
 
 		instance.pgconfig = "postgresql://" + pguser + "@" + pghost + ":" + pgport + "/" + pgdatabase;
 
-		debug.log('Instance ENV: ', instance.env);
-		debug.log('Instance pgconfig: ', instance.pgconfig);
+		//debug.log('Instance ENV: ', instance.env);
+		//debug.log('Instance pgconfig: ', instance.pgconfig);
 
 	}).then(() => {
-		debug.log("Initializing PostgreSQL database");
+		//debug.log("Initializing PostgreSQL database");
 		return spawnProcess(PG_CTL, ["init", "-s", "-t", PGCTL_TIMEOUT, "-w", "-o", "-N -U " + pguser], {"env": instance.env});
 	}).then(() => {
-		debug.log("Starting PostgreSQL");
+		//debug.log("Starting PostgreSQL");
 		return spawnProcess(PG_CTL, PG_CTL_START_OPTS, {"env": instance.env});
 	}).then(() => {
-		debug.log("Creating database");
+		//debug.log("Creating database");
 
 		return spawnProcess(
 		'createdb',
