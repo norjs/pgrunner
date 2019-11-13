@@ -1,7 +1,5 @@
-"use strict";
-
 import assert from 'assert';
-import pg from '../../dist/index.js';
+import pg from '../../src/pgrunner.js';
 
 describe('nor-pgrunner', () => {
 
@@ -24,6 +22,7 @@ describe('nor-pgrunner', () => {
 			assert.equal("postgresql://dummyuser@127.0.0.1:54323/dummydb", db.pgconfig, "Should generate proper config string!");
 			return db.stop();
 		});
+
 	});
 
 });
