@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/norjs/pgrunner",
   "dependencies": {
+    "@norjs/utils": "^1.0.17",
     "esm": "^3.2.25",
     "lodash": "^4.17.15",
     "merge": "^1.1.3",

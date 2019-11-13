@@ -2,7 +2,7 @@ import _ from "lodash";
 import AssertUtils from "@norjs/utils/src/AssertUtils";
 import fs from "fs";
 import PATH from "path";
-import merge from "merge";
+import MERGE from "merge";
 import child_process from "child_process";
 import TEMP from "temp";
 import RIMRAF from "rimraf";
@@ -57,7 +57,7 @@ export class PgRunnerUtils {
             // pgctl start will fail to exit.
 
             const options = {
-                env: merge(process.env, env || {}),
+                env: MERGE(process.env, env || {}),
                 detached: true,
                 stdio: ["ignore", "ignore", "pipe"]
             };
