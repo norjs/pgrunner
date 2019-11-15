@@ -1,6 +1,6 @@
 {
   "name": "@norjs/pgrunner",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "NorJS PostgreSQL Database Server Runner for development purposes",
   "main": "./src/pgrunner.js",
   "bin": {

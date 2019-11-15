@@ -1,4 +1,5 @@
 lib-cov
+src-cov
 *.seed
 *.log
 *.csv
@@ -13,5 +14,3 @@ results
 
 npm-debug.log
 node_modules
-
-/src/
