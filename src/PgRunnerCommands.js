@@ -6,6 +6,7 @@ import _ from "lodash";
 import FS from "fs";
 import { PGRUNNER_CONFIG_FILE } from "./pgrunner-env";
 import { MAIN_USAGE } from "./pgrunner-constants";
+import ProcessUtils from "@norjs/utils/src/ProcessUtils";
 
 const nrLog = LogUtils.getLogger('PgRunnerCommands');
 
@@ -101,7 +102,7 @@ export class PgRunnerCommands {
         const steps = _.map(ACTIONS, cmd => {
 
             if (_.isFunction(COMMANDS[cmd])) {
-                return COMMANDS[cmd].bind(undefined, this._stripArgv(OPTIONS) );
+                return COMMANDS[cmd].bind(undefined, ProcessUtils.parseOptionsAsObject(OPTIONS) );
             } else {
                 throw new Error('Unknown command: ' + cmd);
             }
@@ -146,40 +147,6 @@ export class PgRunnerCommands {
         }
 
         return config;
-    }
-
-    /** Strip argv
-     *
-     * @param a {Array}
-     * @returns {Object}
-     */
-    static _stripArgv (a) {
-
-        let o = {};
-
-        Object.keys(a).map(k => {
-
-            let key, value;
-
-            const index = k.indexOf('=');
-            if (index >= 0) {
-
-                key = k.substr(0, index);
-                value = k.substr(index+1);
-
-            } else {
-
-                key = k;
-                value = true;
-
-            }
-
-            o[key] = value;
-
-        });
-
-        return o;
-
     }
 
     /** Strip keys

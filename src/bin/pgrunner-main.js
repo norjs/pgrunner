@@ -1,19 +1,19 @@
 import PGRUNNER from '../pgrunner.js';
 import LogUtils from "@norjs/utils/Log";
 import PgRunnerUtils from "../PgRunnerUtils";
-import _ from 'lodash';
 import PgRunnerConstants from "../pgrunner-constants";
 import PgRunnerCommands from "../PgRunnerCommands";
+import ProcessUtils from "@norjs/utils/Process";
 
 const nrLog = LogUtils.getLogger('pgrunner-main');
 
-const ALL_ARGS = _.slice(process.argv, 2);
+const ALL_ARGS = ProcessUtils.getArguments();
 
-const ACTIONS = _.filter(ALL_ARGS, arg => arg.length && arg[0] !== '-');
+const ACTIONS = ProcessUtils.filterFreeArguments(ALL_ARGS);
 
-const OPTIONS = _.filter(ALL_ARGS, arg => arg.length && arg[0] === '-').map(arg => _.trimStart(arg, '-'));
+const OPTIONS = ProcessUtils.filterOptions(ALL_ARGS);
 
-const ENABLE_VERBOSE = _.some(OPTIONS, arg => arg === 'v' || arg === 'verbose');
+const ENABLE_VERBOSE = ProcessUtils.parseBooleanOption(OPTIONS, 'v', 'verbose');
 
 if (ENABLE_VERBOSE) {
 
