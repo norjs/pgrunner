@@ -1,8 +1,28 @@
-
+/**
+ * This is a fail safe list of known postgresql executable paths in case pg_ctl is not included in user's PATH
+ *
+ * @type {*[]}
+ */
 export const PG_PATHS = [
+    '/usr/lib/postgresql/16/bin',
+    '/Library/PostgreSQL/16/bin',
+    '/usr/lib/postgresql/15/bin',
+    '/Library/PostgreSQL/15/bin',
+    '/usr/lib/postgresql/14/bin',
+    '/Library/PostgreSQL/14/bin',
+    '/usr/lib/postgresql/13/bin',
+    '/Library/PostgreSQL/13/bin',
+    '/usr/lib/postgresql/12/bin',
+    '/Library/PostgreSQL/12/bin',
+    '/usr/lib/postgresql/11/bin',
+    '/usr/local/Cellar/postgresql/11.1/bin',
+    '/Library/PostgreSQL/11/bin',
+    '/usr/lib/postgresql/10/bin',
+    '/Library/PostgreSQL/10/bin',
+    '/usr/lib/postgresql/9/bin',
+    '/Library/PostgreSQL/9/bin',
     '/usr/lib/postgresql/9.3/bin',
-    '/usr/lib/postgresql/9.4/bin',
-    '/usr/local/Cellar/postgresql/11.1/bin'
+    '/usr/lib/postgresql/9.4/bin'
 ];
 
 /**
