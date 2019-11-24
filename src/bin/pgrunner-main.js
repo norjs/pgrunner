@@ -26,10 +26,12 @@ if (ENABLE_VERBOSE) {
 	nrLog.trace(`OPTIONS = `, OPTIONS);
 
 } else {
+
 	nrLog.setLogLevel(nrLog.LogLevel.INFO);
 	PgRunnerUtils.nrLog.setLogLevel(nrLog.LogLevel.INFO);
 	PGRUNNER.nrLog.setLogLevel(nrLog.LogLevel.INFO);
 	PgRunnerCommands.nrLog.setLogLevel(nrLog.LogLevel.INFO);
+
 }
 
 nrLog.trace('pg_ctl detected as ', PgRunnerConstants.PG_CTL);
