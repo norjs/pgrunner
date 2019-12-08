@@ -7,7 +7,7 @@
     "norjs-pgrunner": "./src/bin/pgrunner-command.js"
   },
   "scripts": {
-    "test": "mocha --require esm -t 30000 test/unit/**/*.spec.js",
+    "test": "mocha --full-trace --require esm -t 30000 test/unit/**/*.spec.js",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
     "test-dot": "mocha --require esm -t 30000 -u bdd -c -R dot test/unit/**/*.spec.js",
